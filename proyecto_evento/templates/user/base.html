@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %} - Gestión de Eventos</title>
+    
+</head>
+<body>
+
+    <nav>
+        <div>
+            <a href="{{ url_for('events_list') }}"></a>Sistema Eventos</a>
+        </div>
+        <div>
+            {% if current_user.is_authenticated %}
+                <span>Hola, {{ current_user.nombre_usuario }} ({{ 'Organizador' if current_user.rol == 'organizer' else 'Asistente' }}) | </span>
+                
+                {% if current_user.rol == 'organizer' %}
+                    <a href="{{ url_for('create_event') }}"> Crear Evento</a>
+                {% endif %}
+                
+                <a href="{{ url_for('profile') }}"> Mi Perfil</a>
+                <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Ingresar</a>
+                <a href="{{ url_for('register') }}">Registrarse</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div>
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>
