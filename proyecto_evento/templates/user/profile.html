@@ -1,0 +1,67 @@
+{% extends 'user/base.html' %}
+
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+<h2>Perfil de Usuario</h2>
+
+<form method="POST">
+    <p>
+        Nombre de usuario:<br>
+        <input type="text" nombre="nombre_usuario" value="{{ current_user.nombre_usuario }}" required>
+    </p>
+    <p>
+        Correo electrónico (No editable):<br>
+        <input type="correo" value="{{ current_user.correo }}" disabled>
+    </p>
+    <p>
+        Rol:<br>
+        <input type="text" value="{{ 'Organizador' if current_user.rol == 'organizer' else 'Asistente' }}" disabled>
+    </p>
+    <p>
+        Biografía:<br>
+        <textarea nombre="biografia" rows="4" cols="50">{{ current_user.biografia or '' }}</textarea>
+    </p>
+    <p>
+        <input type="submit" value="Guardar Cambios">
+    </p>
+</form>
+
+<hr>
+
+<h3>
+    {% if current_user.rol == 'organizer' %}
+        Historial de Eventos Creados
+    {% else %}
+        Historial de Eventos Inscritos
+    {% endif %}
+</h3>
+
+{% if history %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Categoría</th>
+                <th>Fecha</th>
+                <th>Capacidad</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for evento in history %}
+                <tr>
+                    <td>{{ evento.titulo }}</td>
+                    <td>{{ evento.categoria }}</td>
+                    <td>{{ evento.fecha }}</td>
+                    <td>{{ evento.capacidad }}</td>
+                    <td>{{ evento.descripcion }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No se encontraron eventos en tu historial.</p>
+{% endif %}
+
+{% endblock %}

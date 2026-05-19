@@ -1,0 +1,36 @@
+{% extends 'user/base.html' %}
+
+{% block title %}Registro de Usuario{% endblock %}
+
+{% block content %}
+<h2>Registro de Nuevo Usuario</h2>
+
+<form action="{{ url_for('auth.register') }}" method="POST">
+    <p>
+        Nombre de Usuario:<br>
+        <input type="text" name="username" required>
+    </p>
+    <p>
+        Correo Electrónico:<br>
+        <input type="email" name="email" required>
+    </p>
+    <p>
+        Contraseña:<br>
+        <input type="password" name="password" required>
+    </p>
+    <p>
+        Tipo de Usuario / Rol:<br>
+        <select name="role" required>
+            <option value="attendee">Asistente</option>
+            <option value="organizer">Organizador</option>
+        </select>
+        biografia:
+        <input type="text" name="biografia" required>  
+    </p>
+    <p>
+        <input type="submit" value="Registrarse">
+    </p>
+</form>
+
+<p>¿Ya tienes una cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión aquí</a></p>
+{% endblock %}

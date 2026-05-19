@@ -1,0 +1,23 @@
+{% extends 'user/base.html' %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<h2>Iniciar Sesión</h2>
+
+<form action="{{ url_for('auth.login') }}" method="POST">
+    <p>
+        Correo Electrónico:<br>
+        <input type="email" name="email" required>
+    </p>
+    <p>
+        Contraseña:<br>
+        <input type="password" name="password" required>
+    </p>
+    <p>
+        <input type="submit" value="Ingresar">
+    </p>
+</form>
+
+<p>¿No tienes una cuenta? <a href="{{ url_for('auth.register') }}">Regístrate aquí</a></p>
+{% endblock %}

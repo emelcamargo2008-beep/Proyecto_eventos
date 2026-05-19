@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+
+    <nav>
+        <a href="{{ url_for('events.events_list') }}">Sistema Eventos</a>
+        {% if current_user.is_authenticated %}
+        <span>Hola, {{ current_user.nombre_usuario }}</span>
+        {% if current_user.rol == 'organizer' %}
+        <a href="{{ url_for('events.create_event') }}">Crear Evento</a>
+        {% endif %}
+        <a href="{{ url_for('user.profile') }}">Mi Perfil</a>
+        <a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
+        {% else %}
+        <a href="{{ url_for('auth.login') }}">Ingresar</a>
+        <a href="{{ url_for('auth.register') }}">Registrarse</a>
+        {% endif %}
+    </nav>
+
+    <div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+
+</html>

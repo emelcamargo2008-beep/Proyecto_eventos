@@ -1,0 +1,44 @@
+{% extends 'user/base.html' %}
+
+{% block title %}Listado de Eventos{% endblock %}
+
+{% block content %}
+<h2>Listado de Eventos Disponibles</h2>
+
+{% if events %}
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Fecha</th>
+                <th>Capacidad</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+                <tr>
+                    <td><strong>{{ event.titulo }}</strong></td>
+                    <td>{{ event.descripcion }}</td>
+                    <td>{{ event.fecha }}</td>
+                    <td>{{ event.capacidad }}</td>
+                    <td>{{ event.categoria }}</td>
+                    <td>
+                        {% if current_user.rol == 'organizer' and event.organizer_id == current_user.id %}
+                            <a href="{{ url_for('events.edit_event', event_id=event.id) }}">Editar</a> | 
+                            <form action="{{ url_for('events.delete_event', event_id=event.id) }}" method="POST" style="display:inline;">
+                                <input type="submit" value="Eliminar" onclick="return confirm('¿Seguro?');">
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No tienes eventos creados en este momento.</p>
+{% endif %}
+
+{% endblock %}
